@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
-using Toggl.Ultrawave.Serialization;
+using System;
+using Newtonsoft.Json;
+using JsonSerializer = Toggl.Ultrawave.Serialization.JsonSerializer;
 
 namespace Toggl.Ultrawave.Tests
 {
@@ -20,6 +22,13 @@ namespace Toggl.Ultrawave.Tests
             var actualJson = serializer.Serialize(validObject);
 
             actualJson.Should().Be(validJson);
+        }
+        
+        internal static void DeserializationShouldFail<T>(string invalidJson)
+        {
+            Action deserialization = () => serializer.Deserialize<T>(invalidJson);
+            
+            deserialization.ShouldThrow<JsonSerializationException>();
         }
     }
 }

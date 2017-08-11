@@ -31,5 +31,11 @@ namespace Toggl.Ultrawave.Tests
         {
             SerializationHelper.CanBeSerialized(ValidJson, ValidObject);
         }
+
+        [Fact]
+        public void DeserializationThrowsWhenIDIsNull()
+        {
+            SerializationHelper.DeserializationShouldFail<T>("{\"id\":null}");
+        }
     }
 }

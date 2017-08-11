@@ -141,6 +141,9 @@
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.4.19.3\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\TimeEntryTests.cs" />
