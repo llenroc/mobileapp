@@ -51,6 +51,7 @@
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="LinkerSafeAttribute.cs" />
     <Compile Include="PreserveAttribute.cs" />
+    <Compile Include="Extensions\StringBuilderExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
