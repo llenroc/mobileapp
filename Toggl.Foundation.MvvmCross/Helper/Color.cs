@@ -46,5 +46,10 @@ namespace Toggl.Foundation.MvvmCross.Helper
 
             public static readonly MvxColor Placeholder = pinkishGrey;
         }
+
+        public static class EditTimeEntry
+        {
+            public static readonly MvxColor ClientText = new MvxColor(94, 91, 91);
+        }
     }
 }
