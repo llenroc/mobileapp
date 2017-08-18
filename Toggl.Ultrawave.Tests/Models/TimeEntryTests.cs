@@ -21,7 +21,7 @@ namespace Toggl.Ultrawave.Tests.Models
                 Stop = null,
                 Description = "Some short description",
                 Tags = new string[] { "one", "test", "two" },
-                TagIds = new int[] { 313040, 3129041, 319042 },
+                TagIds = new long[] { 313040, 3129041, 319042 },
                 At = new DateTimeOffset(2017, 4, 25, 20, 12, 27, TimeSpan.Zero),
                 ServerDeletedAt = null,
                 UserId = 0,

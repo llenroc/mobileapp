@@ -24,7 +24,7 @@ namespace Toggl.Ultrawave.Models
 
         public IList<string> Tags { get; set; }
 
-        public IList<int> TagIds { get; set; }
+        public IList<long> TagIds { get; set; }
 
         public DateTimeOffset At { get; set; }
 
