@@ -40,9 +40,6 @@ namespace Toggl.Daneel.ViewControllers
 		UIKit.UILabel DurationLabel { get; set; }
 
 		[Outlet]
-		UIKit.UIView ProjectDot { get; set; }
-
-		[Outlet]
 		UIKit.UILabel ProjectTaskClientLabel { get; set; }
 
 		[Outlet]
@@ -101,9 +98,9 @@ namespace Toggl.Daneel.ViewControllers
 				DurationLabel = null;
 			}
 
-			if (ProjectDot != null) {
-				ProjectDot.Dispose ();
-				ProjectDot = null;
+			if (ProjectTaskClientLabel != null) {
+				ProjectTaskClientLabel.Dispose ();
+				ProjectTaskClientLabel = null;
 			}
 
 			if (StartDateLabel != null) {
@@ -119,11 +116,6 @@ namespace Toggl.Daneel.ViewControllers
 			if (TagsLabel != null) {
 				TagsLabel.Dispose ();
 				TagsLabel = null;
-			}
-
-			if (ProjectTaskClientLabel != null) {
-				ProjectTaskClientLabel.Dispose ();
-				ProjectTaskClientLabel = null;
 			}
 		}
 	}
