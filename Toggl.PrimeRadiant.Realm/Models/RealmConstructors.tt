@@ -43,6 +43,8 @@ namespace Toggl.PrimeRadiant.Realm
 
         foreach(var line in File.ReadAllLines(modelFile))
         {
+            var trimmedLine = line.Trim();
+            
             var extendsIBaseModel = line.Contains(": IBaseModel");
             if (extendsIBaseModel)
             {
@@ -53,8 +55,10 @@ namespace Toggl.PrimeRadiant.Realm
             var isProperty = line.Contains("get;");
             if (!isProperty) continue;
 
+            var isList = trimmedLine.StartsWith("IList<");
+            if (isList) continue;
+
             var isRealmProperty = Regex.IsMatch(line, ".Id ") && !line.Contains("Default");
-            var trimmedLine = line.Trim();
             var indexOfPropName = trimmedLine.IndexOf(" ") + 1;
             var propName = trimmedLine.Substring(indexOfPropName, trimmedLine.Length - 9 - indexOfPropName);
             var assignment = $"entity.{propName}";
