@@ -148,6 +148,8 @@ namespace Toggl.Foundation.Models
 
         public IDatabaseWorkspace Workspace { get; }
 
+        public IList<IDatabaseTag> Tags { get; }
+
         public bool IsDirty { get; }
     }
 
