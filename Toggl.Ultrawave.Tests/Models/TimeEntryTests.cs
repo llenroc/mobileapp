@@ -20,7 +20,7 @@ namespace Toggl.Ultrawave.Tests.Models
                 Start = new DateTimeOffset(2017, 4, 25, 19, 34, 39, TimeSpan.Zero),
                 Stop = null,
                 Description = "Some short description",
-                Tags = new string[] { "one", "test", "two" },
+                TagNames = new string[] { "one", "test", "two" },
                 TagIds = new long[] { 313040, 3129041, 319042 },
                 At = new DateTimeOffset(2017, 4, 25, 20, 12, 27, TimeSpan.Zero),
                 ServerDeletedAt = null,

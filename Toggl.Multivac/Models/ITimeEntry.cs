@@ -19,7 +19,7 @@ namespace Toggl.Multivac.Models
 
         string Description { get; }
 
-        IList<string> Tags { get; }
+        IList<string> TagNames { get; }
 
         IList<long> TagIds { get; }
 

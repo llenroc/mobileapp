@@ -97,7 +97,7 @@ namespace Toggl.Ultrawave.Tests.Integration
             Start = new DateTimeOffset(DateTime.Now - TimeSpan.FromMinutes(5)),
             Stop = new DateTimeOffset(DateTime.Now),
             Description = Guid.NewGuid().ToString(),
-            Tags = new List<string>(),
+            TagNames = new List<string>(),
             TagIds = new List<long>(),
             UserId = user.Id,
             CreatedWith = "Ultraware Integration Tests"
