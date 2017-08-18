@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Toggl.PrimeRadiant.Models;
 using Toggl.Multivac;
+using Toggl.Multivac.Models;
 
 namespace Toggl.Foundation.Models
 {
