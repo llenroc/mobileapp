@@ -116,7 +116,7 @@
                                         <constraint firstAttribute="height" constant="1" id="dmx-bH-pPs"/>
                                     </constraints>
                                 </view>
-                                <stackView opaque="NO" alpha="0.0" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="tvM-Um-8oM" userLabel="AddProjectAndTask">
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="tvM-Um-8oM" userLabel="AddProjectAndTask">
                                     <rect key="frame" x="83" y="65" width="123" height="48"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icAdd" translatesAutoresizingMaskIntoConstraints="NO" id="oHS-Wc-X7K">
