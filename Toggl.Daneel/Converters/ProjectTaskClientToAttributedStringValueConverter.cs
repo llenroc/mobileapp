@@ -16,14 +16,22 @@ namespace Toggl.Daneel.Converters
         protected override NSAttributedString Convert((string project, string task, string client) value, Type targetType, object parameter, CultureInfo culture)
         {
             var builder = new StringBuilder();
-            builder.AppendIfNotEmpty(value.project)
+            builder.AppendIfNotEmpty($" { value.project }")
                    .AppendIfNotEmpty($": { value.task }")
                    .AppendIfNotEmpty($" { value.client }");
 
-            var attributedString = new NSMutableAttributedString(builder.ToString());
+            var dot = new NSTextAttachment
+            {
+                Image = UIImage.FromBundle("icProjectDot")
+            };
+
+            var attributedString = new NSMutableAttributedString(NSAttributedString.FromAttachment(dot));
+            attributedString.Append(new NSAttributedString(builder.ToString()));
+
             var colorRange = new NSRange(attributedString.Length - value.client.Length, value.client.Length);
             var attributes = new UIStringAttributes { ForegroundColor = Color.EditTimeEntry.ClientText.ToNativeColor() };
             attributedString.AddAttributes(attributes, colorRange);
+
             return attributedString;
         }
     }
