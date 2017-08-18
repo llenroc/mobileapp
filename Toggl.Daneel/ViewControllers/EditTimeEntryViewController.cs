@@ -37,7 +37,7 @@ namespace Toggl.Daneel.ViewControllers
             var visibilityConverter = new MvxVisibilityValueConverter();
             var inverterVisibilityConverter = new MvxInvertedVisibilityValueConverter();
             var colorConverter = new MvxRGBValueConverter();
-            var projectTaskClientConverter = new ProjectTaskClientToAttributedStringValueConverter();
+            var projectTaskClientConverter = new ProjectTaskClientToAttributedStringValueConverter(ProjectTaskClientLabel.Font);
 
             var bindingSet = this.CreateBindingSet<EditTimeEntryViewController, EditTimeEntryViewModel>();
             
