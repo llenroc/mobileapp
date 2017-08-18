@@ -35,8 +35,8 @@ namespace Toggl.Foundation.MvvmCross.ViewModels
 
         public string Task { get; set; }
 
-        public (string project, string task, string client) ProjectTaskClient
-            => (Project, Task, Client);
+        public (string project, string task, string client, string color) ProjectTaskClient
+            => (Project, Task, Client, ProjectColor);
 
         [DependsOn(nameof(StartTime), nameof(EndTime))]
         public TimeSpan Duration
