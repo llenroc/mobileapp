@@ -10,7 +10,6 @@ using MvvmCross.Plugins.Color.iOS;
 using Toggl.Foundation.MvvmCross.Helper;
 using Toggl.Multivac;
 using UIKit;
-using static Toggl.Multivac.Extensions.StringBuilderExtensions;
 
 namespace Toggl.Daneel.Converters
 {
@@ -31,15 +30,23 @@ namespace Toggl.Daneel.Converters
         protected override NSAttributedString Convert((string project, string task, string client, string color) value, Type targetType, object parameter, CultureInfo culture)
         {
             var builder = new StringBuilder();
-            builder.AppendIfNotEmpty($" { value.project }")
-                   .AppendIfNotEmpty($": { value.task }")
-                   .AppendIfNotEmpty($" { value.client }");
+
+            if (!string.IsNullOrEmpty(value.project))
+                builder.Append($" { value.project }");
+            
+            if (!string.IsNullOrEmpty(value.task))
+                builder.Append($": { value.task }");
+            
+            if (!string.IsNullOrEmpty(value.client))
+                builder.Append($" { value.client }");
+
 
             var image = UIImage.FromBundle("icProjectDot").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
             var dot = new NSTextAttachment
             {
                 Image = image
             };
+            //There neeeds to be a space before the dot, otherwise the colors don't work
             var attributedString = new NSMutableAttributedString(" ");
             attributedString.Append(NSAttributedString.FromAttachment(dot));
             attributedString.Append(new NSAttributedString(builder.ToString()));
@@ -60,6 +67,9 @@ namespace Toggl.Daneel.Converters
 
         private void setProjectDotColor(NSMutableAttributedString text, string hexColor)
         {
+            if (string.IsNullOrEmpty(hexColor))
+                return;
+
             var range = new NSRange(0, 1);
             var color = (UIColor)colorConverter.Convert(hexColor, typeof(MvxColor), null, CultureInfo.CurrentCulture);
             var attributes = new UIStringAttributes { ForegroundColor = color };
@@ -68,6 +78,9 @@ namespace Toggl.Daneel.Converters
 
         private void setClientTextColor(NSMutableAttributedString text, string client)
         {
+            if (string.IsNullOrEmpty(client))
+                return;
+
             var range = new NSRange(text.Length - client.Length, client.Length);
             var attributes = new UIStringAttributes { ForegroundColor = Color.EditTimeEntry.ClientText.ToNativeColor() };
             text.AddAttributes(attributes, range);
