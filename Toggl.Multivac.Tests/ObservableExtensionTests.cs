@@ -13,7 +13,7 @@ namespace Toggl.Multivac.Tests
         public class TheConnectedReplayExtensionMethod
         {
             [Fact]
-            public void ConnectsObservable()
+            public void Connects()
             {
                 var connected = false;
                 var observable = Observable.Create<object>(observer => {
