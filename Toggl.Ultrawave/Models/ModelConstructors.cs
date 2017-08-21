@@ -93,7 +93,7 @@ namespace Toggl.Ultrawave.Models
             Start = entity.Start;
             Stop = entity.Stop;
             Description = entity.Description;
-            Tags = entity.Tags;
+            TagNames = entity.TagNames;
             TagIds = entity.TagIds;
             At = entity.At;
             ServerDeletedAt = entity.ServerDeletedAt;
@@ -152,6 +152,28 @@ namespace Toggl.Ultrawave.Models
             RoundingMinutes = entity.RoundingMinutes;
             At = entity.At;
             LogoUrl = entity.LogoUrl;
+        }
+    }
+
+    public sealed partial class WorkspaceFeature
+    {
+        public WorkspaceFeature() { }
+
+        public WorkspaceFeature(IWorkspaceFeature entity)
+        {
+            FeatureId = entity.FeatureId;
+            Enabled = entity.Enabled;
+        }
+    }
+
+    public sealed partial class WorkspaceFeatureCollection
+    {
+        public WorkspaceFeatureCollection() { }
+
+        public WorkspaceFeatureCollection(IWorkspaceFeatureCollection entity)
+        {
+            WorkspaceId = entity.WorkspaceId;
+            Features = entity.Features;
         }
     }
 }

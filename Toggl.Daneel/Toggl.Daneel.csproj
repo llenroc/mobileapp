@@ -356,7 +356,7 @@
     <Compile Include="ViewControllers\TimeEntriesLogViewController.designer.cs">
       <DependentUpon>TimeEntriesLogViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewSources\GroupBindingTableViewSource.cs" />
+    <Compile Include="ViewSources\TimeEntriesLogViewSource.cs" />
     <Compile Include="Views\SuggestionsEmptyViewCell.cs" />
     <Compile Include="Views\SuggestionsEmptyViewCell.designer.cs">
         <DependentUpon>SuggestionsEmptyViewCell.cs</DependentUpon>
@@ -394,6 +394,7 @@
     <Compile Include="Bootstrap\ColorPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Converters\ProjectTaskClientToAttributedStringValueConverter.cs" />
+    <Compile Include="Converters\BoolToUIColorConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Foundation.MvvmCross\Toggl.Foundation.MvvmCross.csproj">
