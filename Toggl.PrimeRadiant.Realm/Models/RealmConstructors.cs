@@ -158,11 +158,6 @@ namespace Toggl.PrimeRadiant.Realm
             Start = entity.Start;
             Stop = entity.Stop;
             Description = entity.Description;
-<<<<<<< HEAD
-=======
-            TagNames = entity.TagNames;
-            TagIds = entity.TagIds;
->>>>>>> develop
             At = entity.At;
             ServerDeletedAt = entity.ServerDeletedAt;
             var skipUserFetch = entity?.UserId == null || entity.UserId == 0;
