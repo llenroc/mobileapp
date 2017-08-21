@@ -20,14 +20,11 @@ namespace Toggl.PrimeRadiant.Realm
 
         public IList<RealmTag> RealmTags { get; }
 
-        public IList<string> TagNames
-            => Tags.Select(tag => tag.Name).ToList();
+        public IEnumerable<string> TagNames => RealmTags?.Select(tag => tag.Name);
 
-        public IList<long> TagIds
-            => Tags.Select(tag => tag.Id).ToList();
+        public IEnumerable<long> TagIds => RealmTags?.Select(tag => tag.Id);
 
-        public IList<IDatabaseTag> Tags
-            => RealmTags?.ToList<IDatabaseTag>() ?? new List<IDatabaseTag>();
+        public IEnumerable<IDatabaseTag> Tags => RealmTags;
 
         public DateTimeOffset At { get; set; }
 

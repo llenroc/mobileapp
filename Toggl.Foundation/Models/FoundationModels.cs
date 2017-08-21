@@ -126,9 +126,9 @@ namespace Toggl.Foundation.Models
 
         public string Description { get; }
 
-        public IList<string> TagNames { get; }
+        public IEnumerable<string> TagNames { get; }
 
-        public IList<long> TagIds { get; }
+        public IEnumerable<long> TagIds { get; }
 
         public DateTimeOffset At { get; }
 
@@ -148,7 +148,7 @@ namespace Toggl.Foundation.Models
 
         public IDatabaseWorkspace Workspace { get; }
 
-        public IList<IDatabaseTag> Tags { get; }
+        public IEnumerable<IDatabaseTag> Tags { get; }
 
         public bool IsDirty { get; }
     }

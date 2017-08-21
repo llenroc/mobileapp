@@ -15,6 +15,6 @@ namespace Toggl.PrimeRadiant.Models
 
         IDatabaseWorkspace Workspace { get; }
         
-        IList<IDatabaseTag> Tags { get; }
+        IEnumerable<IDatabaseTag> Tags { get; }
     }
 }
