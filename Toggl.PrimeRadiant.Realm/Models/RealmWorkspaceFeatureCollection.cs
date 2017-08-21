@@ -13,11 +13,9 @@ namespace Toggl.PrimeRadiant.Realm
 
         public IList<RealmWorkspaceFeature> RealmWorkspaceFeatures { get; }
 
-        public IEnumerable<IDatabaseWorkspaceFeature> DatabaseFeatures
-            => RealmWorkspaceFeatures?.Cast<IDatabaseWorkspaceFeature>().ToList() ?? new List<IDatabaseWorkspaceFeature>();
+        public IEnumerable<IDatabaseWorkspaceFeature> DatabaseFeatures => RealmWorkspaceFeatures;
 
-        public IEnumerable<IWorkspaceFeature> Features
-            => DatabaseFeatures.ToList<IWorkspaceFeature>();
+        public IEnumerable<IWorkspaceFeature> Features => RealmWorkspaceFeatures;
 
         public bool IsEnabled(WorkspaceFeatureId feature)
             => Features.Any(f => f.FeatureId == feature && f.Enabled);
