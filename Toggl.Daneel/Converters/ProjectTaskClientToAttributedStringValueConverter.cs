@@ -26,7 +26,6 @@ namespace Toggl.Daneel.Converters
             this.font = font;
         }
 
-
         protected override NSAttributedString Convert((string project, string task, string client, string color) value, Type targetType, object parameter, CultureInfo culture)
         {
             var builder = new StringBuilder();
@@ -39,13 +38,10 @@ namespace Toggl.Daneel.Converters
             
             if (!string.IsNullOrEmpty(value.client))
                 builder.Append($" { value.client }");
-
+           
 
             var image = UIImage.FromBundle("icProjectDot").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
-            var dot = new NSTextAttachment
-            {
-                Image = image
-            };
+            var dot = new NSTextAttachment { Image = image };
             //There neeeds to be a space before the dot, otherwise the colors don't work
             var attributedString = new NSMutableAttributedString(" ");
             attributedString.Append(NSAttributedString.FromAttachment(dot));
