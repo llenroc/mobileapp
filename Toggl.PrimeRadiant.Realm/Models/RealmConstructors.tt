@@ -55,8 +55,8 @@ namespace Toggl.PrimeRadiant.Realm
             var isProperty = line.Contains("get;");
             if (!isProperty) continue;
 
-            var isList = trimmedLine.StartsWith("IEnumerable<");
-            if (isList) continue;
+            var isEnumerable = trimmedLine.StartsWith("IEnumerable<");
+            if (isEnumerable) continue;
 
             var isRealmProperty = Regex.IsMatch(line, ".Id ") && !line.Contains("Default");
             var indexOfPropName = trimmedLine.IndexOf(" ") + 1;
