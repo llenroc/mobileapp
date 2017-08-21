@@ -38,7 +38,7 @@ namespace Toggl.Daneel.Converters
             
             if (!string.IsNullOrEmpty(value.client))
                 builder.Append($" { value.client }");
-           
+            
 
             var image = UIImage.FromBundle("icProjectDot").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
             var dot = new NSTextAttachment { Image = image };
@@ -47,9 +47,14 @@ namespace Toggl.Daneel.Converters
             attributedString.Append(NSAttributedString.FromAttachment(dot));
             attributedString.Append(new NSAttributedString(builder.ToString()));
 
+
             verticallyCenterProjectDot(dot);
-            setProjectDotColor(attributedString, value.color);
-            setClientTextColor(attributedString, value.client);
+           
+            if (!string.IsNullOrEmpty(value.color))
+                setProjectDotColor(attributedString, value.color);
+            
+            if (!string.IsNullOrEmpty(value.client))
+                setClientTextColor(attributedString, value.client);
             
             return attributedString;
         }
@@ -63,9 +68,6 @@ namespace Toggl.Daneel.Converters
 
         private void setProjectDotColor(NSMutableAttributedString text, string hexColor)
         {
-            if (string.IsNullOrEmpty(hexColor))
-                return;
-
             var range = new NSRange(0, 1);
             var color = (UIColor)colorConverter.Convert(hexColor, typeof(MvxColor), null, CultureInfo.CurrentCulture);
             var attributes = new UIStringAttributes { ForegroundColor = color };
@@ -74,9 +76,6 @@ namespace Toggl.Daneel.Converters
 
         private void setClientTextColor(NSMutableAttributedString text, string client)
         {
-            if (string.IsNullOrEmpty(client))
-                return;
-
             var range = new NSRange(text.Length - client.Length, client.Length);
             var attributes = new UIStringAttributes { ForegroundColor = Color.EditTimeEntry.ClientText.ToNativeColor() };
             text.AddAttributes(attributes, range);
