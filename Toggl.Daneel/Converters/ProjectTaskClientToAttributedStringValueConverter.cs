@@ -28,25 +28,14 @@ namespace Toggl.Daneel.Converters
 
         protected override NSAttributedString Convert((string project, string task, string client, string color) value, Type targetType, object parameter, CultureInfo culture)
         {
-            var builder = new StringBuilder();
-
-            if (!string.IsNullOrEmpty(value.project))
-                builder.Append($" { value.project }");
-            
-            if (!string.IsNullOrEmpty(value.task))
-                builder.Append($": { value.task }");
-            
-            if (!string.IsNullOrEmpty(value.client))
-                builder.Append($" { value.client }");
-            
+            var text = buildString(value.project, value.task, value.client);
 
             var image = UIImage.FromBundle("icProjectDot").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
             var dot = new NSTextAttachment { Image = image };
             //There neeeds to be a space before the dot, otherwise the colors don't work
             var attributedString = new NSMutableAttributedString(" ");
             attributedString.Append(NSAttributedString.FromAttachment(dot));
-            attributedString.Append(new NSAttributedString(builder.ToString()));
-
+            attributedString.Append(new NSAttributedString(text));
 
             verticallyCenterProjectDot(dot);
            
@@ -57,6 +46,22 @@ namespace Toggl.Daneel.Converters
                 setClientTextColor(attributedString, value.client);
             
             return attributedString;
+        }
+
+        private string buildString(string project, string task, string client)
+        {
+            var builder = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(project))
+                builder.Append($" { project }");
+            
+            if (!string.IsNullOrEmpty(task))
+                builder.Append($": { task }");
+            
+            if (!string.IsNullOrEmpty(client))
+                builder.Append($" { client }");
+
+            return builder.ToString();
         }
 
         private void verticallyCenterProjectDot(NSTextAttachment dot)
