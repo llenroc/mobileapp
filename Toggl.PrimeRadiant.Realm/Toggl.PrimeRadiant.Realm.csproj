@@ -52,6 +52,7 @@
     <Compile Include="SinceParameterStorage.cs" />
     <Compile Include="Models\RealmWorkspaceFeature.cs" />
     <Compile Include="Models\RealmWorkspaceFeatureCollection.cs" />
+    <Compile Include="Adapters\BaseRealmAdapter.cs" />
     <Compile Include="Adapters\IRealmAdapter.cs" />
     <Compile Include="Adapters\RealmAdapter.cs" />
   </ItemGroup>
