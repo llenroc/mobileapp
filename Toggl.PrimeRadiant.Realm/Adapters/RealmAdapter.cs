@@ -6,18 +6,6 @@ using Toggl.Multivac.Models;
 
 namespace Toggl.PrimeRadiant.Realm
 {
-    internal interface IRealmAdapter<TModel>
-        where TModel : IBaseModel, IDatabaseSyncable
-    {
-        IQueryable<TModel> GetAll();
-
-        void Delete(TModel entity);
-
-        TModel Create(TModel entity);
-
-        TModel Update(TModel entity);   
-    }
-
     internal sealed class RealmAdapter<TRealmEntity, TModel> : IRealmAdapter<TModel>
         where TRealmEntity : RealmObject, TModel
         where TModel: IBaseModel, IDatabaseSyncable
