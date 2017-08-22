@@ -52,6 +52,7 @@
     <Compile Include="Models\IDatabaseWorkspaceFeature.cs" />
     <Compile Include="Models\IDatabaseWorkspaceFeatureCollection.cs" />
     <Compile Include="IWorkspaceFeatureCollectionsRepository.cs" />
+    <Compile Include="IBaseRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Ultrawave\Toggl.Ultrawave.csproj">
