@@ -44,7 +44,6 @@
     <Compile Include="Models\RealmTimeEntry.cs" />
     <Compile Include="Models\RealmProject.cs" />
     <Compile Include="Database.cs" />
-    <Compile Include="RealmAdapter.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="BaseStorage.cs" />
     <Compile Include="SingleObjectStorage.cs" />
@@ -53,6 +52,7 @@
     <Compile Include="SinceParameterStorage.cs" />
     <Compile Include="Models\RealmWorkspaceFeature.cs" />
     <Compile Include="Models\RealmWorkspaceFeatureCollection.cs" />
+    <Compile Include="Adapters\RealmAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Multivac\Toggl.Multivac.csproj">
@@ -96,6 +96,9 @@
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Adapters\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Fody.2.0.6\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.2.0.6\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
