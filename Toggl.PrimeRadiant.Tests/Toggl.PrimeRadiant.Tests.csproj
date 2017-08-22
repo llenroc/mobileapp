@@ -175,7 +175,10 @@
     <Compile Include="BaseStorageTests.cs" />
     <Compile Include="Realm\TestAdapter.cs" />
     <Compile Include="Realm\RealmSingleObjectStorageTests.cs" />
+    <Compile Include="Realm\TestWorkspaceFeatureCollectionAdapter.cs" />
+    <Compile Include="Realm\WorkspaceFeatureCollectionRealmRepositoryTests.cs" />
     <Compile Include="BaseRepositoryTests.cs" />
+    <Compile Include="WorkspaceFeatureCollectionTestModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.PrimeRadiant\Toggl.PrimeRadiant.csproj">

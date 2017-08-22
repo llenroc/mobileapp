@@ -9,7 +9,7 @@ using Xunit;
 namespace Toggl.PrimeRadiant.Tests
 {
     public abstract class BaseStorageTests<TTestModel>
-        where TTestModel : class, ITestModel, IDatabaseSyncable, new()
+        where TTestModel : class, IDatabaseSyncable, new()
     {
         protected abstract IObservable<TTestModel> Create(TTestModel testModel);
         protected abstract IObservable<TTestModel> Update(TTestModel testModel);
