@@ -55,6 +55,8 @@
     <Compile Include="Adapters\BaseRealmAdapter.cs" />
     <Compile Include="Adapters\IRealmAdapter.cs" />
     <Compile Include="Adapters\RealmAdapter.cs" />
+    <Compile Include="Adapters\WorkspaceFeaturesRealmAdapter.cs" />
+    <Compile Include="WorkspaceFeatureCollectionsRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Multivac\Toggl.Multivac.csproj">
