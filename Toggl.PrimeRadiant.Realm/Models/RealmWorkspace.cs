@@ -33,7 +33,5 @@ namespace Toggl.PrimeRadiant.Realm
         public DateTimeOffset? At { get; set; }
 
         public string LogoUrl { get; set; }
-        
-        public RealmWorkspaceFeatureCollection RealmWorkspaceFeatureCollection { get; set; }
     }
 }

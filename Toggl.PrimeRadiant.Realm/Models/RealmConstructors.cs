@@ -243,4 +243,49 @@ namespace Toggl.PrimeRadiant.Realm
             IsDirty = true;
         }
     }
+
+    internal partial class RealmWorkspaceFeature
+    {
+        [PrimaryKey]
+        public long Id { get; set; }
+
+        public bool IsDirty { get; set; }
+
+        public RealmWorkspaceFeature() { }
+
+        public RealmWorkspaceFeature(IDatabaseWorkspaceFeature entity, Realms.Realm realm)
+            : this(entity as IWorkspaceFeature, realm)
+        {
+            IsDirty = entity.IsDirty;
+        }
+
+        public RealmWorkspaceFeature(IWorkspaceFeature entity, Realms.Realm realm)
+        {
+            Enabled = entity.Enabled;
+            IsDirty = true;
+        }
+    }
+
+    internal partial class RealmWorkspaceFeatureCollection
+    {
+        [PrimaryKey]
+        public long Id { get; set; }
+
+        public bool IsDirty { get; set; }
+
+        public RealmWorkspaceFeatureCollection() { }
+
+        public RealmWorkspaceFeatureCollection(IDatabaseWorkspaceFeatureCollection entity, Realms.Realm realm)
+            : this(entity as IWorkspaceFeatureCollection, realm)
+        {
+            IsDirty = entity.IsDirty;
+        }
+
+        public RealmWorkspaceFeatureCollection(IWorkspaceFeatureCollection entity, Realms.Realm realm)
+        {
+            var skipWorkspaceFetch = entity?.WorkspaceId == null || entity.WorkspaceId == 0;
+            RealmWorkspace = skipWorkspaceFetch ? null :realm.All<RealmWorkspace>().Single(x => x.Id == entity.WorkspaceId);
+            IsDirty = true;
+        }
+    }
 }

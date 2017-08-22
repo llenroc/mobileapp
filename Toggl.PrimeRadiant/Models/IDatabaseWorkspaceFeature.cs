@@ -2,5 +2,5 @@
 
 namespace Toggl.PrimeRadiant.Models
 {
-    public interface IDatabaseWorkspaceFeature : IWorkspaceFeature { }
+    public interface IDatabaseWorkspaceFeature : IWorkspaceFeature, IDatabaseSyncable { }
 }

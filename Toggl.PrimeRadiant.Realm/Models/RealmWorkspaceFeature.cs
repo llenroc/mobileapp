@@ -4,7 +4,7 @@ using Toggl.PrimeRadiant.Models;
 
 namespace Toggl.PrimeRadiant.Realm
 {
-    internal class RealmWorkspaceFeature : RealmObject, IDatabaseWorkspaceFeature
+    internal partial class RealmWorkspaceFeature : RealmObject, IDatabaseWorkspaceFeature
     {
         [Ignored]
         public WorkspaceFeatureId FeatureId
