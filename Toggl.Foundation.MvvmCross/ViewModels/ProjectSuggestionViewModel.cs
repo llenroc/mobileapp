@@ -1,10 +1,17 @@
-﻿using MvvmCross.Core.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using MvvmCross.Core.ViewModels;
+using Toggl.Foundation.MvvmCross.Helper;
 using Toggl.PrimeRadiant.Models;
 
 namespace Toggl.Foundation.MvvmCross.ViewModels
 {
     public sealed class ProjectSuggestionViewModel : MvxNotifyPropertyChanged, ITimeEntrySuggestionViewModel
     {
+        private static ProjectSuggestionViewModel NoProject = new ProjectSuggestionViewModel();
+
+        public long Id { get; }
+
         public int NumberOfTasks { get; } = 0;
 
         public string ProjectName { get; } = "";
@@ -13,15 +20,28 @@ namespace Toggl.Foundation.MvvmCross.ViewModels
 
         public string ProjectColor { get; }
 
-        public ProjectSuggestionViewModel(IDatabaseProject project, int numberOfTasks)
+        private ProjectSuggestionViewModel()
         {
+            ProjectColor = "#CECECE";
+            ProjectName = Resources.NoProject;
+        }
+
+        public ProjectSuggestionViewModel(IDatabaseProject project)
+        {
+            Id = project.Id;
             ProjectName = project.Name;
             ProjectColor = project.Color;
-            NumberOfTasks = numberOfTasks;
 
             if (project.Client == null) return;
 
             ClientName = project.Client.Name;
+        }
+
+        internal static IEnumerable<ProjectSuggestionViewModel> PrepentEmptyProject(IEnumerable<ProjectSuggestionViewModel> projects)
+        {
+            yield return NoProject;
+            foreach (var project in projects)
+                yield return project;
         }
     }
 }

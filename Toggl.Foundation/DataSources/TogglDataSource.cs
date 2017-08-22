@@ -17,13 +17,14 @@ namespace Toggl.Foundation.DataSources
 
             this.database = database;
 
+            Tags = new TagsDataSource(database.Tags);
             User = new UserDataSource(database.User, api.User);
             Projects = new ProjectsDataSource(database.Projects);
             TimeEntries = new TimeEntriesDataSource(database.IdProvider, database.TimeEntries);
         }
 
         public IUserSource User { get; }
-        public ITagsSource Tags => throw new NotImplementedException();
+        public ITagsSource Tags { get; }
         public ITasksSource Tasks => throw new NotImplementedException();
         public IClientsSource Clients => throw new NotImplementedException();
         public IProjectsSource Projects { get; }

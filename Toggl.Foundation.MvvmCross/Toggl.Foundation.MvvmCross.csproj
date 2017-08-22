@@ -58,6 +58,8 @@
     <Compile Include="Converters\TaskCountConverter.cs" />
     <Compile Include="ViewModels\ITimeEntrySuggestionViewModel.cs" />
     <Compile Include="ViewModels\ProjectSuggestionViewModel.cs" />
+    <Compile Include="ViewModels\TimeEntrySuggestionViewModel.cs" />
+    <Compile Include="ViewModels\TagSuggestionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Reactive.Interfaces">
