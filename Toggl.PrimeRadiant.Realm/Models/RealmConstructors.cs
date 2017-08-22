@@ -246,9 +246,6 @@ namespace Toggl.PrimeRadiant.Realm
 
     internal partial class RealmWorkspaceFeature
     {
-        [PrimaryKey]
-        public long Id { get; set; }
-
         public bool IsDirty { get; set; }
 
         public RealmWorkspaceFeature() { }
@@ -268,9 +265,6 @@ namespace Toggl.PrimeRadiant.Realm
 
     internal partial class RealmWorkspaceFeatureCollection
     {
-        [PrimaryKey]
-        public long Id { get; set; }
-
         public bool IsDirty { get; set; }
 
         public RealmWorkspaceFeatureCollection() { }
