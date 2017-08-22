@@ -9,7 +9,7 @@ namespace Toggl.PrimeRadiant.Realm
 {
     internal sealed class WorkspaceFeatureCollectionsRepository : BaseStorage<IDatabaseWorkspaceFeatureCollection>, IWorkspaceFeatureCollectionsRepository
     {
-        public WorkspaceFeatureCollectionsRepository(WorkspaceFeaturesRealmAdapter adapter)
+        public WorkspaceFeatureCollectionsRepository(IRealmAdapter<IDatabaseWorkspaceFeatureCollection> adapter)
             : base(adapter)
         {
         }
