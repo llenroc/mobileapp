@@ -9,11 +9,11 @@ namespace Toggl.PrimeRadiant.Realm
         where TModel : IBaseModel, IDatabaseSyncable
     {
         public RealmAdapter(Func<TModel, Realms.Realm, TRealmEntity> convertToRealm)
-            : base(convertToRealm, matchEntity)
+            : base(convertToRealm, matchEntityById)
         {
         }
 
-        private static bool matchEntity(TRealmEntity realmEntry, TModel modelEntity)
+        private static bool matchEntityById(TRealmEntity realmEntry, TModel modelEntity)
             => realmEntry.Id == modelEntity.Id;
     }
 }
