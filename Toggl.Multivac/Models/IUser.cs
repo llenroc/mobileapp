@@ -6,7 +6,7 @@ namespace Toggl.Multivac.Models
     {
         string ApiToken { get; }
 
-        int DefaultWorkspaceId { get; }
+        long DefaultWorkspaceId { get; }
 
         string Email { get; }
 
@@ -18,8 +18,7 @@ namespace Toggl.Multivac.Models
 
         bool StoreStartAndStopTime { get; }
 
-        //TODO: Map to an Enum?
-        int BeginningOfWeek { get; }
+        BeginningOfWeek BeginningOfWeek { get; }
 
         string Language { get; }
 

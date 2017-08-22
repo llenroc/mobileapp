@@ -1,58 +1,91 @@
-﻿using System.Reactive.Linq;
+﻿using System;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Microsoft.Reactive.Testing;
 using NSubstitute;
 using Toggl.Foundation.DataSources;
-using Toggl.Multivac.Extensions;
+using Toggl.Multivac.Models;
 using Toggl.PrimeRadiant;
 using Toggl.PrimeRadiant.Models;
-using Toggl.Ultrawave.ApiClients;
-using Toggl.Ultrawave.Network;
 using Xunit;
-using User = Toggl.Ultrawave.Models.User;
 
 namespace Toggl.Foundation.Tests.DataSources
 {
     public class UserDataSourceTests
     {
-        public class TheLoginMethod
+        public class UserDataSourceTest
         {
-            private readonly User user = new User { Id = 10 } ;
+            protected ITimeEntriesSource TimeEntriesSource { get; }
 
-            private readonly IUserApi userApi = Substitute.For<IUserApi>();
-            private readonly ISingleObjectStorage<IDatabaseUser> storage =
-                Substitute.For<ISingleObjectStorage<IDatabaseUser>>();
+            protected string ValidDescription { get; } = "Testing software";
 
-            private readonly UserDataSource userSource;
+            protected DateTimeOffset ValidTime { get; } = DateTimeOffset.Now;
 
-            public TheLoginMethod()
+            protected IRepository<IDatabaseTimeEntry> Repository { get; } = Substitute.For<IRepository<IDatabaseTimeEntry>>();
+
+            public UserDataSourceTest()
             {
-                userSource = new UserDataSource(storage, userApi);
+                TimeEntriesSource = new TimeEntriesDataSource(Repository);
+                Repository.Create(Arg.Any<IDatabaseTimeEntry>())
+                          .Returns(info => Observable.Return(info.Arg<IDatabaseTimeEntry>()));
+            }
+        }
 
-                userApi.Get(Arg.Any<Credentials>()).Returns(Observable.Return(user));
+        public class TheStartMethod : UserDataSourceTest
+        {
+            [Fact]
+            public async Task CreatesANewTimeEntryInTheDatabase()
+            {
+                await TimeEntriesSource.Start(ValidTime, ValidDescription, true);
+
+                await Repository.Received().Create(Arg.Any<IDatabaseTimeEntry>());
             }
 
             [Fact]
-            public async Task ShouldCreateCredentialsInsteadOfUsingTheOnesTheUserClientHas()
+            public async Task CreatesADirtyTimeEntry()
             {
-                await userSource.Login("susancalvin@psychohistorian.museum".ToEmail(), "theirobotmoviesucked123");
-                await userApi.Received().Get(Arg.Any<Credentials>());
+                await TimeEntriesSource.Start(ValidTime, ValidDescription, true);
+
+                await Repository.Received().Create(Arg.Is<IDatabaseTimeEntry>(te => te.IsDirty));
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public async Task CreatesATimeEntryWithTheProvidedValueForBillable(bool billable)
+            {
+                await TimeEntriesSource.Start(ValidTime, ValidDescription, billable);
+
+                await Repository.Received().Create(Arg.Is<IDatabaseTimeEntry>(te => te.Billable == billable));
             }
 
             [Fact]
-            public async Task ShouldPersistTheUserToTheDatabase()
+            public async Task CreatesATimeEntryWithTheProvidedValueForDescription()
             {
-                await userSource.Login("susancalvin@psychohistorian.museum".ToEmail(), "theirobotmoviesucked123");
-                await storage.Received().Create(Arg.Is<IDatabaseUser>(receivedUser => receivedUser.Id == user.Id));
+                await TimeEntriesSource.Start(ValidTime, ValidDescription, true);
+                
+                await Repository.Received().Create(Arg.Is<IDatabaseTimeEntry>(te => te.Description == ValidDescription));
             }
 
             [Fact]
-            public async Task ShouldAlwaysReturnASingleResult()
+            public async Task CreatesATimeEntryWithTheProvidedValueForStartTime()
             {
-                var actualUser = await userSource.Login("susancalvin@psychohistorian.museum".ToEmail(), "theirobotmoviesucked123")
-                                                 .SingleAsync();
+                await TimeEntriesSource.Start(ValidTime, ValidDescription, true);
 
-                actualUser.Should().Be(user);
+                await Repository.Received().Create(Arg.Is<IDatabaseTimeEntry>(te => te.Start == ValidTime));
+            }
+
+            [Fact]
+            public async Task SetstheCreatedTimeEntryAsTheCurrentlyRunningTimeEntry()
+            {
+                var observer = new TestScheduler().CreateObserver<ITimeEntry>();
+                TimeEntriesSource.CurrentlyRunningTimeEntry.Where(te => te != null).Subscribe(observer);
+
+                await TimeEntriesSource.Start(ValidTime, ValidDescription, true);
+
+                var currentlyRunningTimeEntry = observer.Messages.Single().Value.Value;
+                await Repository.Received().Create(Arg.Is<IDatabaseTimeEntry>(te => te.Start == currentlyRunningTimeEntry.Start));
             }
         }
     }

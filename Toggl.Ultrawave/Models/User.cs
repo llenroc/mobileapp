@@ -1,22 +1,22 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Toggl.Multivac;
 using Toggl.Multivac.Models;
 
 namespace Toggl.Ultrawave.Models
 {
-    public sealed class User : IUser
+    public sealed partial class User : IUser
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string ApiToken { get; set; }
         
-        public int DefaultWorkspaceId { get; set; }
+        public long DefaultWorkspaceId { get; set; }
 
         public string Email { get; set; }
 
         public string Fullname { get; set; }
 
-        //BACKEND Y U STEP ON SNEK??
         [JsonProperty("timeofday_format")]
         public string TimeOfDayFormat { get; set; }
 
@@ -24,7 +24,7 @@ namespace Toggl.Ultrawave.Models
 
         public bool StoreStartAndStopTime { get; set; }
 
-        public int BeginningOfWeek { get; set; }
+        public BeginningOfWeek BeginningOfWeek { get; set; }
 
         public string Language { get; set; }
 

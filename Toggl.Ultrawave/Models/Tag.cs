@@ -1,15 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 using Toggl.Multivac.Models;
+using Newtonsoft.Json;
 
 namespace Toggl.Ultrawave.Models
 {
-    public sealed class Tag : ITag
+    public sealed partial class Tag : ITag
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        [JsonProperty("wid")]
-        public int WorkspaceId { get; set; }
+        public long WorkspaceId { get; set; }
 
         public string Name { get; set; }
+
+        public DateTimeOffset At { get; set; }
+
+        [JsonConstructor]
+        public Tag(long id, long workspaceId, string name, DateTimeOffset? at)
+        {
+            Id = id;
+            WorkspaceId = workspaceId;
+            Name = name;
+            At = at ?? new DateTimeOffset(DateTime.UtcNow);
+        }
     }
 }

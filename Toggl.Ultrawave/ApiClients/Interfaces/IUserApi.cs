@@ -1,13 +1,10 @@
 ﻿using System;
-using Toggl.Ultrawave.Models;
-using Toggl.Ultrawave.Network;
+using Toggl.Multivac.Models;
 
 namespace Toggl.Ultrawave.ApiClients
 {
     public interface IUserApi
     {
-        IObservable<User> Get();
-
-        IObservable<User> Get(Credentials credentials);
+        IObservable<IUser> Get();
     }
 }

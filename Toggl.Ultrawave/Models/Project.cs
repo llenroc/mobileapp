@@ -1,18 +1,19 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Toggl.Multivac.Models;
+using Toggl.Ultrawave.Serialization;
 
-namespace Toggl.Ultrawave
+namespace Toggl.Ultrawave.Models
 {
-    public sealed class Project : IProject
+    public sealed partial class Project : IProject
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("wid")]
-        public int WorkspaceId { get; set; }
+        public long WorkspaceId { get; set; }
 
         [JsonProperty("cid")]
-        public int? ClientId { get; set; }
+        public long? ClientId { get; set; }
 
         public string Name { get; set; }
 
@@ -22,24 +23,30 @@ namespace Toggl.Ultrawave
 
         public DateTimeOffset At { get; set; }
 
-        public DateTimeOffset CreatedAt { get; set; }
-
+        [IgnoreWhenPosting]
         public DateTimeOffset? ServerDeletedAt { get; set; }
 
         public string Color { get; set; }
 
-        public bool Billable { get; set; }
+        [IgnoreWhenPosting]
+        public bool? Billable { get; set; }
 
-        public bool Template { get; set; }
+        [IgnoreWhenPosting]
+        public bool? Template { get; set; }
 
-        public bool AutoEstimates { get; set; }
+        [IgnoreWhenPosting]
+        public bool? AutoEstimates { get; set; }
 
+        [IgnoreWhenPosting]
         public int? EstimatedHours { get; set; }
 
-        public int? Rate { get; set; }
+        [IgnoreWhenPosting]
+        public double? Rate { get; set; }
 
+        [IgnoreWhenPosting]
         public string Currency { get; set; }
 
-        public int ActualHours { get; set; }
+        [IgnoreWhenPosting]
+        public int? ActualHours { get; set; }
     }
 }

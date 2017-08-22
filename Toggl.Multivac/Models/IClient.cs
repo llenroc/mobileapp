@@ -4,10 +4,12 @@ namespace Toggl.Multivac.Models
 {
     public interface IClient : IBaseModel
     {
-        int WorkspaceId { get; }
+        long WorkspaceId { get; }
 
         string Name { get; }
 
         DateTimeOffset At { get; }
+
+        DateTimeOffset? ServerDeletedAt { get; }
     }
 }

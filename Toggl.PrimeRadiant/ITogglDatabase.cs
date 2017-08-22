@@ -1,4 +1,5 @@
-﻿using Toggl.Multivac.Models;
+﻿using System;
+using System.Reactive;
 using Toggl.PrimeRadiant.Models;
 
 namespace Toggl.PrimeRadiant
@@ -12,5 +13,8 @@ namespace Toggl.PrimeRadiant
         IRepository<IDatabaseTask> Tasks { get; }
         IRepository<IDatabaseTimeEntry> TimeEntries { get; }
         IRepository<IDatabaseWorkspace> Workspaces { get; }
+        IIdProvider IdProvider { get; }
+        ISinceParameterRepository SinceParameters { get; }
+        IObservable<Unit> Clear();
     }
 }

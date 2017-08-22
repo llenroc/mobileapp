@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>Daneel</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.toggl.daneel</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,5 +32,11 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>org-appextension-feature-password-management</string>
+	</array>
+	<key>CFBundleName</key>
+	<string>Toggl</string>
 </dict>
 </plist>

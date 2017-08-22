@@ -1,7 +1,7 @@
 ﻿using System;
-using Toggl.Ultrawave.Network;
+using Toggl.Multivac.Extensions;
 
-namespace Toggl.Ultrawave
+namespace Toggl.Ultrawave.Network
 {
     internal struct ClientEndpoints
     {
@@ -14,7 +14,10 @@ namespace Toggl.Ultrawave
 
         public Endpoint Get => Endpoint.Get(baseUrl, "me/clients");
 
-        public Endpoint Post(int workspaceId)
-            => Endpoint.Post(baseUrl, $"workspaces/{ workspaceId }/clients");
+        public Endpoint GetSince(DateTimeOffset threshold)
+            => Endpoint.Get(baseUrl, $"me/clients?since={threshold.ToUnixTimeSeconds()}");
+
+        public Endpoint Post(long workspaceId)
+            => Endpoint.Post(baseUrl, $"workspaces/{workspaceId}/clients");
     }
 }

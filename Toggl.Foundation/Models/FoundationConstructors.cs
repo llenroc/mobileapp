@@ -1,4 +1,4 @@
-﻿using Toggl.Multivac.Models;
+﻿﻿using Toggl.Multivac.Models;
 
 namespace Toggl.Foundation.Models
 {
@@ -10,6 +10,7 @@ namespace Toggl.Foundation.Models
             WorkspaceId = entity.WorkspaceId;
             Name = entity.Name;
             At = entity.At;
+            ServerDeletedAt = entity.ServerDeletedAt;
             IsDirty = isDirty;
         }
 
@@ -25,6 +26,21 @@ namespace Toggl.Foundation.Models
         private Project(IProject entity, bool isDirty)
         {
             Id = entity.Id;
+            WorkspaceId = entity.WorkspaceId;
+            ClientId = entity.ClientId;
+            Name = entity.Name;
+            IsPrivate = entity.IsPrivate;
+            Active = entity.Active;
+            At = entity.At;
+            ServerDeletedAt = entity.ServerDeletedAt;
+            Color = entity.Color;
+            Billable = entity.Billable;
+            Template = entity.Template;
+            AutoEstimates = entity.AutoEstimates;
+            EstimatedHours = entity.EstimatedHours;
+            Rate = entity.Rate;
+            Currency = entity.Currency;
+            ActualHours = entity.ActualHours;
             IsDirty = isDirty;
         }
 
@@ -42,6 +58,7 @@ namespace Toggl.Foundation.Models
             Id = entity.Id;
             WorkspaceId = entity.WorkspaceId;
             Name = entity.Name;
+            At = entity.At;
             IsDirty = isDirty;
         }
 
@@ -57,6 +74,14 @@ namespace Toggl.Foundation.Models
         private Task(ITask entity, bool isDirty)
         {
             Id = entity.Id;
+            Name = entity.Name;
+            ProjectId = entity.ProjectId;
+            WorkspaceId = entity.WorkspaceId;
+            UserId = entity.UserId;
+            EstimatedSeconds = entity.EstimatedSeconds;
+            Active = entity.Active;
+            At = entity.At;
+            TrackedSeconds = entity.TrackedSeconds;
             IsDirty = isDirty;
         }
 
@@ -69,7 +94,7 @@ namespace Toggl.Foundation.Models
 
     internal partial class TimeEntry
     {
-        private TimeEntry(ITimeEntry entity, bool isDirty)
+        private TimeEntry(ITimeEntry entity, bool isDirty, bool isDeleted = false)
         {
             Id = entity.Id;
             WorkspaceId = entity.WorkspaceId;
@@ -78,15 +103,15 @@ namespace Toggl.Foundation.Models
             Billable = entity.Billable;
             Start = entity.Start;
             Stop = entity.Stop;
-            Duration = entity.Duration;
             Description = entity.Description;
-            Tags = entity.Tags;
+            TagNames = entity.TagNames;
             TagIds = entity.TagIds;
             At = entity.At;
             ServerDeletedAt = entity.ServerDeletedAt;
             UserId = entity.UserId;
             CreatedWith = entity.CreatedWith;
             IsDirty = isDirty;
+            IsDeleted = isDeleted;
         }
 
         public static TimeEntry Clean(ITimeEntry entity)
@@ -94,6 +119,12 @@ namespace Toggl.Foundation.Models
 
         public static TimeEntry Dirty(ITimeEntry entity)
             => new TimeEntry(entity, true);
+
+        public static TimeEntry CleanDeleted(ITimeEntry entity)
+            => new TimeEntry(entity, false, true);
+
+        public static TimeEntry DirtyDeleted(ITimeEntry entity)
+            => new TimeEntry(entity, true, true);
     }
 
     internal partial class User
@@ -134,9 +165,6 @@ namespace Toggl.Foundation.Models
         {
             Id = entity.Id;
             Name = entity.Name;
-            Profile = entity.Profile;
-            Premium = entity.Premium;
-            BusinessWs = entity.BusinessWs;
             Admin = entity.Admin;
             SuspendedAt = entity.SuspendedAt;
             ServerDeletedAt = entity.ServerDeletedAt;

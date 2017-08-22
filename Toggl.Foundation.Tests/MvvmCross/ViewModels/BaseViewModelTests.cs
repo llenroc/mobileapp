@@ -1,33 +1,37 @@
-﻿using MvvmCross.Test.Core;
+﻿using MvvmCross.Core.ViewModels;
 using NSubstitute;
 using Toggl.Foundation.DataSources;
-using Toggl.Foundation.MvvmCross.ViewModels;
 using Toggl.PrimeRadiant;
 using Toggl.Ultrawave;
 
 namespace Toggl.Foundation.Tests.MvvmCross.ViewModels
 {
-    public abstract class BaseViewModelTests<TViewModel> : MvxIoCSupportingTest
-        where TViewModel : BaseViewModel
+    public abstract class BaseViewModelTests<TViewModel> : BaseMvvmCrossTests
+        where TViewModel : MvxViewModel
     {
-        protected BaseViewModelTests()
-        {
-            Setup();
-
-            ViewModel = Ioc.IoCConstruct<TViewModel>();
-        }
-
-        protected TViewModel ViewModel { get; }
-
         protected ITogglApi Api { get; } = Substitute.For<ITogglApi>();
+        protected ITimeService TimeService { get; } = Substitute.For<ITimeService>();
         protected ITogglDatabase Database { get; } = Substitute.For<ITogglDatabase>();
         protected ITogglDataSource DataSource { get; } = Substitute.For<ITogglDataSource>();
 
-        protected override void AdditionalSetup()
+        protected TViewModel ViewModel { get; private set; }
+
+        protected BaseViewModelTests()
         {
-            Ioc.RegisterSingleton(Api);
-            Ioc.RegisterSingleton(Database);
-            Ioc.RegisterSingleton(DataSource);
+            Setup();
         }
-     }
+
+        protected abstract TViewModel CreateViewModel();
+
+        private void Setup()
+        {
+            AdditionalSetup();
+
+            ViewModel = CreateViewModel();
+        }
+
+        protected virtual void AdditionalSetup()
+        {
+        }
+    }
 }

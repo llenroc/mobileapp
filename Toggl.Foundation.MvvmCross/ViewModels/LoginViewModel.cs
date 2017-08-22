@@ -1,85 +1,188 @@
-using System.Reactive.Linq;
-using MvvmCross.Core.ViewModels;
-using Toggl.Multivac.Models;
 using System;
-using Toggl.Foundation.MvvmCross.Services;
-using Toggl.Ultrawave.Network;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using MvvmCross.Core.Navigation;
+using MvvmCross.Core.ViewModels;
 using MvvmCross.Platform;
+using PropertyChanged;
 using Toggl.Foundation.DataSources;
-using Toggl.PrimeRadiant;
-using Toggl.Ultrawave;
+using Toggl.Foundation.Login;
+using Toggl.Foundation.MvvmCross.Parameters;
+using Toggl.Foundation.MvvmCross.Services;
+using Toggl.Multivac;
+using Toggl.Ultrawave.Exceptions;
 using EmailType = Toggl.Multivac.Email;
+using LoginType = Toggl.Foundation.MvvmCross.Parameters.LoginParameter.LoginType;
 
 namespace Toggl.Foundation.MvvmCross.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    [Preserve(AllMembers = true)]
+    public class LoginViewModel : MvxViewModel<LoginParameter>
     {
+        public const int EmailPage = 0;
+        public const int PasswordPage = 1;
+
+        private readonly ILoginManager loginManager;
+        private readonly IMvxNavigationService navigationService;
+        private readonly IPasswordManagerService passwordManagerService;
+
         private IDisposable loginDisposable;
+        private IDisposable passwordManagerDisposable;
 
-        private EmailType userEmail = EmailType.Invalid;
-        private readonly IApiFactory apiFactory;
+        private EmailType email = EmailType.Invalid;
 
-        private string email = "";
-        public string Email 
-        {     
-            get { return email; }
-            set
-            {
-                if (email == value) return;
+        public string Title { get; private set; }
 
-                email = value;
-                userEmail = EmailType.FromString(value);
+        public string Email { get; set; } = "";
 
-                LoginCommand.RaiseCanExecuteChanged();
+        public string Password { get; set; } = "";
 
-                RaisePropertyChanged(nameof(Email));
-                RaisePropertyChanged(nameof(EmailIsValid));
-            }
-        }
+        public string ErrorText { get; set; } = "";
 
-        public string Password { get; set; }
+        [DependsOn(nameof(ErrorText))]
+        public bool HasError => !string.IsNullOrEmpty(ErrorText);
 
-        public IMvxCommand LoginCommand { get; }
+        public int CurrentPage { get; private set; } = EmailPage;
 
-        public LoginViewModel(IApiFactory apiFactory)
+        public bool IsLoading { get; private set; } = false;
+
+        public bool IsPasswordMasked { get; private set; } = true;
+
+        public LoginType LoginType { get; set; }
+
+        public IMvxCommand NextCommand { get; }
+
+        public IMvxCommand BackCommand { get; }
+
+        public IMvxCommand TogglePasswordVisibilityCommand { get; }
+
+        public IMvxCommand StartPasswordManagerCommand { get; }
+
+        [DependsOn(nameof(CurrentPage))]
+        public bool IsEmailPage => CurrentPage == EmailPage;
+
+        [DependsOn(nameof(CurrentPage))]
+        public bool IsPasswordPage => CurrentPage == PasswordPage;
+
+        [DependsOn(nameof(IsPasswordPage), nameof(IsLoading))]
+        public bool ShowPasswordButtonVisible => IsPasswordPage && !IsLoading;
+
+        [DependsOn(nameof(CurrentPage), nameof(Password))]
+        public bool NextIsEnabled
+            => IsEmailPage ? email.IsValid : (Password.Length > 0 && !IsLoading);
+
+        public bool IsPasswordManagerAvailable
+            => passwordManagerService.IsAvailable;
+
+        public LoginViewModel(ILoginManager loginManager, IMvxNavigationService navigationService, IPasswordManagerService passwordManagerService)
         {
-            this.apiFactory = apiFactory;
-            LoginCommand = new MvxCommand(login, loginCanExecute);
+            Ensure.Argument.IsNotNull(loginManager, nameof(loginManager));
+            Ensure.Argument.IsNotNull(navigationService, nameof(navigationService));
+            Ensure.Argument.IsNotNull(passwordManagerService, nameof(passwordManagerService));
+
+            this.loginManager = loginManager;
+            this.navigationService = navigationService;
+            this.passwordManagerService = passwordManagerService;
+
+            BackCommand = new MvxCommand(back);
+            NextCommand = new MvxCommand(next);
+            StartPasswordManagerCommand = new MvxCommand(startPasswordManager);
+            TogglePasswordVisibilityCommand = new MvxCommand(togglePasswordVisibility);
         }
 
-        public bool EmailIsValid => userEmail.IsValid;
+        public override Task Initialize(LoginParameter parameter)
+        {
+            LoginType = parameter.Type;
+            Title = LoginType == LoginType.Login ? Resources.LoginTitle : Resources.SignUpTitle;
+
+            return base.Initialize();
+        }
+
+        private void OnEmailChanged()
+        {
+            email = EmailType.FromString(Email);
+            RaisePropertyChanged(nameof(NextIsEnabled));
+        }
+
+        private void next()
+        {
+            if (!NextIsEnabled) return;
+
+            if (IsPasswordPage) login();
+
+            CurrentPage = PasswordPage;
+            ErrorText = "";
+        }
+
+        private void back()
+        {
+            if (IsEmailPage)
+                navigationService.Close(this);
+
+            CurrentPage = EmailPage;
+            ErrorText = "";
+        }
+
+        private void togglePasswordVisibility()
+            => IsPasswordMasked = !IsPasswordMasked;
 
         private void login()
         {
-            loginDisposable =
-                DataSource.User
-                          .Login(userEmail, Password)
-                          .Subscribe(onUser, onError);
+            IsLoading = true;
 
-            LoginCommand.RaiseCanExecuteChanged();
+            loginDisposable =
+                loginManager
+                    .Login(email, Password)
+                    .Subscribe(onDataSource, onError, onCompleted);
         }
 
-        private bool loginCanExecute() 
-            => loginDisposable == null && EmailIsValid;
-
-        private void onUser(IUser user)
+        private void startPasswordManager()
         {
-            loginDisposable = null;
-            LoginCommand.RaiseCanExecuteChanged();
+            if (!passwordManagerService.IsAvailable) return;
+            if (passwordManagerDisposable != null) return;
 
-            var credentials = Credentials.WithApiToken(user.ApiToken);
-            var api = apiFactory.CreateApiWith(credentials);
-            var database = Mvx.Resolve<ITogglDatabase>();
-            var dataSource = new TogglDataSource(database, api);
+            passwordManagerDisposable =
+                passwordManagerService
+                    .GetLoginInformation()
+                    .Subscribe(onLoginInfo, onError, onCompleted);
+        }
 
-            Mvx.RegisterSingleton<ITogglApi>(api);
-            Mvx.RegisterSingleton<ITogglDataSource>(dataSource);
+        private void onLoginInfo(PasswordManagerResult loginInfo)
+        {
+            Email = loginInfo.Email;
+            if (!NextIsEnabled) return;
+ 
+            CurrentPage = PasswordPage;
+            Password = loginInfo.Password;
+            if (!NextIsEnabled) return;
+
+            login();
+        }
+
+        private void onDataSource(ITogglDataSource dataSource)
+        {
+            Mvx.RegisterSingleton(dataSource);
+
+            navigationService.Navigate<MainViewModel>();
         }
 
         private void onError(Exception ex)
         {
+            ErrorText = ex is ForbiddenException ? Resources.IncorrectEmailOrPassword
+                                                 : Resources.GenericLoginError;
+
+            onCompleted();
+        }
+
+        private void onCompleted()
+        {
+            IsLoading = false;
+
+            loginDisposable?.Dispose();
+            passwordManagerDisposable?.Dispose();
+
             loginDisposable = null;
-            LoginCommand.RaiseCanExecuteChanged();
+            passwordManagerDisposable = null;
         }
     }
 }

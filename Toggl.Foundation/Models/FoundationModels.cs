@@ -1,104 +1,121 @@
-﻿using System;
+﻿﻿﻿using System;
 using System.Collections.Generic;
 using Toggl.PrimeRadiant.Models;
+using Toggl.Multivac;
 
 namespace Toggl.Foundation.Models
 {
     internal partial class Client : IDatabaseClient
     {
-        public int Id { get; }
+        public long Id { get; }
 
-        public int WorkspaceId { get; }
+        public long WorkspaceId { get; }
 
         public string Name { get; }
 
         public DateTimeOffset At { get; }
+
+        public DateTimeOffset? ServerDeletedAt { get; }
+
+        public IDatabaseWorkspace Workspace { get; }
 
         public bool IsDirty { get; }
     }
 
     internal partial class Project : IDatabaseProject
     {
-        public int Id { get; }
+        public long Id { get; }
+
+        public long WorkspaceId { get; }
+
+        public long? ClientId { get; }
+
+        public string Name { get; }
+
+        public bool IsPrivate { get; }
+
+        public bool Active { get; }
+
+        public DateTimeOffset At { get; }
+
+        public DateTimeOffset? ServerDeletedAt { get; }
+
+        public string Color { get; }
+
+        public bool? Billable { get; }
+
+        public bool? Template { get; }
+
+        public bool? AutoEstimates { get; }
+
+        public int? EstimatedHours { get; }
+
+        public double? Rate { get; }
+
+        public string Currency { get; }
+
+        public int? ActualHours { get; }
+
+        public IDatabaseClient Client { get; }
+
+        public IDatabaseWorkspace Workspace { get; }
 
         public bool IsDirty { get; }
-
-        public int WorkspaceId { get; set; }
-
-        public int? ClientId { get; set; }
-
-        public string Name { get; set; }
-
-        public bool IsPrivate { get; set; }
-
-        public bool Active { get; set; }
-
-        public DateTimeOffset At { get; set; }
-
-        public DateTimeOffset CreatedAt { get; set; }
-
-        public DateTimeOffset? ServerDeletedAt { get; set; }
-
-        public string Color { get; set; }
-
-        public bool Billable { get; set; }
-
-        public bool Template { get; set; }
-
-        public bool AutoEstimates { get; set; }
-
-        public int? EstimatedHours { get; set; }
-
-        public int? Rate { get; set; }
-
-        public string Currency { get; set; }
-
-        public int ActualHours { get; set; }
     }
 
     internal partial class Tag : IDatabaseTag
     {
-        public int Id { get; }
+        public long Id { get; }
 
-        public int WorkspaceId { get; }
+        public long WorkspaceId { get; }
 
         public string Name { get; }
+
+        public DateTimeOffset At { get; }
+
+        public IDatabaseWorkspace Workspace { get; }
 
         public bool IsDirty { get; }
     }
 
     internal partial class Task : IDatabaseTask
     {
-        public int Id { get; }
+        public long Id { get; }
+
+        public string Name { get; }
+
+        public long ProjectId { get; }
+
+        public long WorkspaceId { get; }
+
+        public long? UserId { get; }
+
+        public int EstimatedSeconds { get; }
+
+        public bool Active { get; }
+
+        public DateTimeOffset At { get; }
+
+        public int TrackedSeconds { get; }
+
+        public IDatabaseUser User { get; }
+
+        public IDatabaseProject Project { get; }
+
+        public IDatabaseWorkspace Workspace { get; }
 
         public bool IsDirty { get; }
-
-        public string Name { get; set; }
-
-        public int ProjectId { get; set; }
-
-        public int WorkspaceId { get; set; }
-
-        public int? UserId { get; set; }
-
-        public int? EstimatedSeconds { get; set; }
-
-        public bool Active { get; set; }
-
-        public DateTimeOffset At { get; set; }
-
-        public int TrackedSeconds { get; set; }
     }
 
     internal partial class TimeEntry : IDatabaseTimeEntry
     {
-        public int Id { get; }
+        public long Id { get; }
 
-        public int WorkspaceId { get; }
+        public long WorkspaceId { get; }
 
-        public int? ProjectId { get; }
+        public long? ProjectId { get; }
 
-        public int? TaskId { get; }
+        public long? TaskId { get; }
 
         public bool Billable { get; }
 
@@ -106,32 +123,40 @@ namespace Toggl.Foundation.Models
 
         public DateTimeOffset? Stop { get; }
 
-        public int Duration { get; }
-
         public string Description { get; }
 
-        public IList<string> Tags { get; }
+        public IList<string> TagNames { get; }
 
-        public IList<int> TagIds { get; }
+        public IList<long> TagIds { get; }
 
         public DateTimeOffset At { get; }
 
         public DateTimeOffset? ServerDeletedAt { get; }
 
-        public int UserId { get; }
+        public long UserId { get; }
 
         public string CreatedWith { get; }
+
+        public bool IsDeleted { get; }
+
+        public IDatabaseTask Task { get; }
+
+        public IDatabaseUser User { get; }
+
+        public IDatabaseProject Project { get; }
+
+        public IDatabaseWorkspace Workspace { get; }
 
         public bool IsDirty { get; }
     }
 
     internal partial class User : IDatabaseUser
     {
-        public int Id { get; }
+        public long Id { get; }
 
         public string ApiToken { get; }
 
-        public int DefaultWorkspaceId { get; }
+        public long DefaultWorkspaceId { get; }
 
         public string Email { get; }
 
@@ -143,7 +168,7 @@ namespace Toggl.Foundation.Models
 
         public bool StoreStartAndStopTime { get; }
 
-        public int BeginningOfWeek { get; }
+        public BeginningOfWeek BeginningOfWeek { get; }
 
         public string Language { get; }
 
@@ -168,15 +193,9 @@ namespace Toggl.Foundation.Models
 
     internal partial class Workspace : IDatabaseWorkspace
     {
-        public int Id { get; }
+        public long Id { get; }
 
         public string Name { get; }
-
-        public int Profile { get; }
-
-        public bool Premium { get; }
-
-        public bool BusinessWs { get; }
 
         public bool Admin { get; }
 
