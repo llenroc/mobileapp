@@ -31,6 +31,8 @@ namespace Toggl.Daneel.ViewControllers
             UIKeyboard.Notifications.ObserveWillShow(keyboardWillShow);
             UIKeyboard.Notifications.ObserveWillHide(keyboardWillHide);
 
+            DescriptionTextField.KeyboardType = UIKeyboardType.Twitter;
+
             var source = new StartTimeEntryTableViewSource(SuggestionsTableView);
             SuggestionsTableView.Source = source;
 
