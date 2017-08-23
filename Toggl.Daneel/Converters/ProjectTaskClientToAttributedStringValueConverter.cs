@@ -53,13 +53,13 @@ namespace Toggl.Daneel.Converters
             var builder = new StringBuilder();
 
             if (!string.IsNullOrEmpty(project))
-                builder.Append($" { project }");
+                builder.Append($" {project}");
             
             if (!string.IsNullOrEmpty(task))
-                builder.Append($": { task }");
+                builder.Append($": {task}");
             
             if (!string.IsNullOrEmpty(client))
-                builder.Append($" { client }");
+                builder.Append($" {client}");
 
             return builder.ToString();
         }

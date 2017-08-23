@@ -403,7 +403,6 @@
     <Compile Include="Bootstrap\ColorPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Converters\ProjectTaskClientToAttributedStringValueConverter.cs" />
-    <Compile Include="Converters\BoolToUIColorConverter.cs" />
     <Compile Include="ViewSources\StartTimeEntryTableViewSource.cs" />
     <Compile Include="Views\StartTimeEntryProjectsViewCell.cs" />
     <Compile Include="Views\StartTimeEntryProjectsViewCell.designer.cs">
