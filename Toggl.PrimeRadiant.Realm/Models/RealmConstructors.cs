@@ -1,4 +1,4 @@
-﻿﻿using Realms;
+﻿using Realms;
 using System.Linq;
 using Toggl.Multivac.Models;
 using Toggl.PrimeRadiant.Models;
@@ -258,6 +258,7 @@ namespace Toggl.PrimeRadiant.Realm
 
         public RealmWorkspaceFeature(IWorkspaceFeature entity, Realms.Realm realm)
         {
+            FeatureId = entity.FeatureId;
             Enabled = entity.Enabled;
             IsDirty = true;
         }
@@ -278,7 +279,7 @@ namespace Toggl.PrimeRadiant.Realm
         public RealmWorkspaceFeatureCollection(IWorkspaceFeatureCollection entity, Realms.Realm realm)
         {
             var skipWorkspaceFetch = entity?.WorkspaceId == null || entity.WorkspaceId == 0;
-            RealmWorkspace = skipWorkspaceFetch ? null :realm.All<RealmWorkspace>().Single(x => x.Id == entity.WorkspaceId);
+            RealmWorkspace = skipWorkspaceFetch ? null : realm.All<RealmWorkspace>().Single(x => x.Id == entity.WorkspaceId);
             IsDirty = true;
         }
     }
