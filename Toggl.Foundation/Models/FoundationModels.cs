@@ -90,13 +90,13 @@ namespace Toggl.Foundation.Models
 
         public long? UserId { get; }
 
-        public int EstimatedSeconds { get; }
+        public long EstimatedSeconds { get; }
 
         public bool Active { get; }
 
         public DateTimeOffset At { get; }
 
-        public int TrackedSeconds { get; }
+        public long TrackedSeconds { get; }
 
         public IDatabaseUser User { get; }
 
@@ -125,9 +125,9 @@ namespace Toggl.Foundation.Models
 
         public string Description { get; }
 
-        public IList<string> Tags { get; }
+        public IList<string> TagNames { get; }
 
-        public IList<int> TagIds { get; }
+        public IList<long> TagIds { get; }
 
         public DateTimeOffset At { get; }
 

@@ -119,7 +119,7 @@ namespace Toggl.Foundation.Tests.DataSources
                 await TimeEntriesSource.Start(ValidTime, ValidDescription, true);
 
                 var currentlyRunningTimeEntry = observer.Messages.Single().Value.Value;
-                await Repository.Received().Create(Arg.Is<IDatabaseTimeEntry>(te => te .Start == currentlyRunningTimeEntry.Start));
+                await Repository.Received().Create(Arg.Is<IDatabaseTimeEntry>(te => te.Start == currentlyRunningTimeEntry.Start));
             }
 
             [Fact]
@@ -132,6 +132,34 @@ namespace Toggl.Foundation.Tests.DataSources
 
                 observer.Messages.Single().Value.Value.Id.Should().Be(-1);
                 observer.Messages.Single().Value.Value.Start.Should().Be(ValidTime);
+            }
+        }
+
+        public sealed class TheGetAllMethod : TimeEntryDataSourceTest
+        {
+            [Fact]
+            public async ThreadingTask NeverReturnsDeletedTimeEntries()
+            {
+                var result = Enumerable
+                    .Range(0, 20)
+                    .Select(i => 
+                    {
+                        var isDeleted = i % 2 == 0;
+                        var timeEntry = Substitute.For<IDatabaseTimeEntry>();
+                        timeEntry.Id.Returns(i);
+                        timeEntry.IsDeleted.Returns(isDeleted);
+                        return timeEntry;
+                    });
+                Repository
+                    .GetAll(Arg.Any<Func<IDatabaseTimeEntry, bool>>())
+                    .Returns(callInfo =>
+                        Observable
+                             .Return(result)
+                             .Select(x => x.Where(callInfo.Arg<Func<IDatabaseTimeEntry, bool>>())));
+
+                var timeEntries = await TimeEntriesSource.GetAll(x => x.Id > 10);
+
+                timeEntries.Should().HaveCount(5);
             }
         }
 

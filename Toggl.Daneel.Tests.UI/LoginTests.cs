@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Xamarin.UITest;
 using Xamarin.UITest.iOS;
 using static Toggl.Daneel.Tests.UI.Extensions.LoginExtensions;
 
@@ -15,10 +14,7 @@ namespace Toggl.Daneel.Tests.UI
         [SetUp]
         public void BeforeEachTest()
         {
-            app = ConfigureApp
-                .iOS
-                .EnableLocalScreenshots()
-                .StartApp();
+            app = Configuration.GetApp();
 
             app.WaitForLoginScreen();
         }
@@ -48,6 +44,30 @@ namespace Toggl.Daneel.Tests.UI
             app.GoToPasswordScreen();
 
             app.GoBackToEmailScreen();
+
+            app.Screenshot("Login email page.");
+        }
+
+        [Test]
+        public void TheNextButtonAfterInputtingAnInvalidPasswordShowsTheErrorLabel()
+        {
+            app.EnterText(Credentials.Username);
+            app.GoToPasswordScreen();
+
+            app.EnterText($"{Credentials.Password}123456");
+            app.TryLoginAndFail();
+
+            app.Screenshot("Login email page.");
+        }
+
+        [Test]
+        public void TheNextButtonAfterInputtingAValidPasswordShowsTheMainScreen()
+        {
+            app.EnterText(Credentials.Username);
+            app.GoToPasswordScreen();
+
+            app.EnterText(Credentials.Password);
+            app.LoginSuccesfully();
 
             app.Screenshot("Login email page.");
         }

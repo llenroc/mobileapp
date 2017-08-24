@@ -1,10 +1,11 @@
 ﻿using System;
 using Toggl.Multivac.Models;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Toggl.Ultrawave.Models
 {
-    public sealed partial class TimeEntry : ITimeEntry
+    internal sealed partial class TimeEntry : ITimeEntry
     {
         public long Id { get; set; }
 
@@ -22,9 +23,10 @@ namespace Toggl.Ultrawave.Models
 
         public string Description { get; set; }
 
-        public IList<string> Tags { get; set; }
+        [JsonProperty("tags")]
+        public IList<string> TagNames { get; set; }
 
-        public IList<int> TagIds { get; set; }
+        public IList<long> TagIds { get; set; }
 
         public DateTimeOffset At { get; set; }
 
